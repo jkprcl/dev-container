@@ -1,0 +1,16 @@
+theme = "dracula"
+
+[editor]
+end-of-line-diagnostics = "hint"
+[editor.inline-diagnostics]
+cursor-line = "warning"
+
+[editor.file-picker]
+hidden = false
+
+[editor.indent-guides]
+render = true
+# character = "┆"
+
+[editor.soft-wrap]
+enable = true

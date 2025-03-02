@@ -1,0 +1,55 @@
+[[language]]
+name = "powershell"
+scope = "source.powershell"
+file-types = ["ps1", "psm1"]
+roots = [".git"]
+comment-token = "#"
+indent = { tab-width = 4, unit = "    " }
+grammar = "powershell"
+language-servers = ["powershell-editor-services"]
+
+[[grammar]]
+name = "powershell"
+source = { git = "https://github.com/airbus-cert/tree-sitter-powershell", rev = "main"}
+[language-server.powershell-editor-services]
+command = "pwsh"
+args = [
+  "-NoLogo",
+  "-NoProfile",
+  "-File",
+  "/opt/PowerShellTools/PowerShellEditorServices/Start-EditorServices.ps1",
+  "-BundledModulesPath", "/opt/PowerShellTools/PowerShellEditorServices",
+  "-SessionDetailsPath", "/opt/PowerShellTools/PowerShellEditorServices/bin/session.json",
+  "-LogPath", "/opt/PowerShellTools/PowerShellEditorServices/PowerShellEditorServices.log",
+  "-FeatureFlags", "@()",
+  "-AdditionalModules", "@()",
+  "-HostName", "helix",
+  "-HostProfileId", "0",
+  "-HostVersion", "1.0.0",
+  "-Stdio",
+  "-LogLevel", "Normal"
+]
+
+
+[[language]]
+name = "python"
+language-id = "python"
+roots = ["pyproject.toml", ".git", ".jj", ".venv/"]
+language-servers = ["ruff", "basedpyright"]
+auto-format = true
+formatter = { command = "uvx", args = ["sh", "-c", "ruff check --fix - | ruff format -"] }
+file-types = ["py", "ipynb"]
+comment-token = "#"
+shebangs = ["python"]
+
+[language-server.basedpyright]
+command = "uv"
+args = ["run", "basedpyright-langserver", "--stdio"]
+
+[language-server.basedpyright.config]
+
+
+[language-server.ruff]
+command = "uvx"
+args = ["ruff","server"]
+environment = { "RUFF_TRACE" = "messages" }
