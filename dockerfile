@@ -50,6 +50,9 @@ ENV PATH="/home/${DEV_USER}/uv/bin:${PATH}"
 # grammar and spelling tools
 RUN cargo install harper-ls --locked
 
+# cargo based tools
+RUN cargo install zoxide --locked
+RUN cargo install ripgrep
 # powershell dev tools
 USER root
 RUN mkdir -p /opt/PowerShellTools
@@ -58,7 +61,10 @@ RUN wget "https://github.com/PowerShell/PowerShellEditorServices/releases/latest
     rm pes.zip
 RUN chown -R ${DEV_USER}:${DEV_USER} /opt/PowerShellTools
 USER ${DEV_USER}
-
+# setup powershell profile
+RUN curl -s https://ohmyposh.dev/install.sh | bash -s
+ENV PATH=$PATH:/home/${DEV_USER}/.local/bin
+COPY --chown=${DEV_USER}:${DEV_USER} profile.ps1 /home/${DEV_USER}/.config/powershell/Microsoft.PowerShell_profile.ps1
 # helix config files
 RUN mkdir -p /home/${DEV_USER}/.config/helix
 COPY --chown=${DEV_USER}:${DEV_USER} helix/ /home/${DEV_USER}/.config/helix/
